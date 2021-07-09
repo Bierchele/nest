@@ -8,18 +8,19 @@ import { Barcode } from './barcode.schema';
 export class BarcodeService {
   constructor(@InjectModel('Barcode') private barcodeModel: Model<Barcode>) {}
 
-  async insertBarcode(CreateBarcodeDto: CreateBarcodeDto) {
+  async postEntry(CreateBarcodeDto: CreateBarcodeDto) {
     const newBarcode = new this.barcodeModel(CreateBarcodeDto);
     await newBarcode.save();
-    return { statusCode: 201, message: '' };
+    return { statusCode: 201, message: 'Barcode added succsessfully' };
   }
 
-  async exertBarcodes() {
+  async getEntries() {
     const barcodes = await this.barcodeModel.find().exec();
-    return barcodes.map((b) => ({
-      ean: b.ean,
-      firstName: b.firstName,
-      lastName: b.lastName,
-    }));
+    return barcodes;
+  }
+
+  async deleteEntry(id: string) {
+    const barcodes = await this.barcodeModel.deleteOne({ _id: Object(id) });
+    return { statusCode: 201, message: 'delete successfully', count: barcodes };
   }
 }

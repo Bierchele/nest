@@ -1,3 +1,4 @@
+import { MONGO_CONNECTION } from './utility';
 import { BarcodesModule } from './barcodes/barcode.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -8,10 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 //compiliert wird, sondern einzelne Module, die spezielle zugeteilte aufgaben haben
 
 @Module({
-  imports: [
-    BarcodesModule,
-    MongooseModule.forRoot('mongodb://localhost:27030'),
-  ],
+  imports: [BarcodesModule, MongooseModule.forRoot(MONGO_CONNECTION)],
   //controller kümmern sich um requests und responses
   controllers: [AppController],
   //externe klassen um funktionalität bereitzustellen

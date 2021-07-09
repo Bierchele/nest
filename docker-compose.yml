@@ -1,37 +1,39 @@
-version: "3"
+version: '3'
 services:
-    client:
-      container_name: "react"
-      image: frontend
-      ports: 
-        - "3000:3000"
-      networks: 
-        - barcode-app    
-    server:
-      container_name: "nest"
-      image: api
-      restart: always
-      build: ./
-      ports:
-        - "8080:8080"
-      networks: 
-        - barcode-app    
-      volumes:
-        - .:/app
-      links: 
-        - mongo
-    mongo:
-      container_name: "mongo"             
-      image: mongo
-      ports: 
-        - "27030:27017"   
-      networks: 
-        - barcode-app  
-      volumes:
-        - mongo-data:/data/db
-networks: 
+  client:
+    container_name: 'react'
+    image: frontend
+    ports:
+      - '3000:3000'
+    networks:
+      - barcode-app
+    depends_on: 
+    - "server"
+  server:
+    container_name: 'nest'
+    image: api
+    restart: always
+    build: ./
+    ports:
+      - '8080:8080'
+    networks:
+      - barcode-app
+    volumes:
+      - .:/app
+    depends_on: 
+      - "mongo"  
+  mongo:
+    container_name: 'mongo'
+    image: mongo
+    ports:
+      - '27030:27017'
+    networks:
+      - barcode-app
+    volumes:
+      - mongo-data:/data/db
+networks:
   barcode-app:
-    driver: bridge      
-volumes: 
-  mongo-data: 
-    driver: local    
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
